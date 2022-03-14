@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
 let lastId = 0;
 
@@ -28,88 +29,19 @@ const slice = createSlice({
 export const { bugAdded, bugRemoved, bugResolved } = slice.actions;
 export default slice.reducer;
 
-// //---------ACTION CREATORS-----------
+//Memoization
+export const getUnresolvedBugs = createSelector(
+  (state) => state.entities.bugs,
+  //the output of this function will get passed to the
+  //result function
+  (bugs) => bugs.filter((bug) => !bug.resolved)
+  // this function will not be executed again if the list of bugs
+  //does not change
+);
 
-// export const bugAdded = createAction("bugAdded");
-// export const bugRemoved = createAction("bugRemoved");
-// export const bugResolved = createAction("bugResolved");
+// //Selector function - takes a state and return computed state
+// export const getUnresolvedBugs = (state) =>
+//   state.entities.bugs.filter((bug) => bug.resolved);
 
-// //make us easy for us to edit our action we can do it in just one place
-
-// // //----REDUCER (using redux tool kit)--------
-
-// // let lastId = 0;
-
-// // export default createReducer([], {
-// //   //key : value
-// //   //actions : functions
-// //   [bugAdded.type]: (state, action) => {
-// //     state.push({
-// //       id: ++lastId,
-// //       description: action.payload.description,
-// //       resolved: false,
-// //     });
-// //   },
-// //   [bugRemoved.type]: (state, action) => {
-// //     return state.filter((bug) => bug.id !== action.payload.id);
-// //   },
-// //   [bugResolved.type]: (state, action) => {
-// //     const index = state.findIndex((bug) => bug.id === action.payload.id);
-// //     state[index].resolved = true;
-// //   },
-// // });
-
-// // // this function is a pure function- it return the same results each time the
-// // //arguments passed are the same
-// // let initalState = [];
-
-// // export function reducer(state = initalState, action) {
-// //   switch (action.type) {
-// //     case bugAdded.type:
-// //       return [
-// //         ...state,
-// //         {
-// //           id: ++lastId,
-// //           description: action.payload.description,
-// //           resolved: false,
-// //         },
-// //       ];
-
-// //     case bugRemoved.type:
-// //       return state.filter((bug) => bug.id === action.payload.id);
-
-// //     case bugResolved.type:
-// //       return [
-// //         state.map((bug) =>
-// //           bug.id !== action.payload.id ? bug : { ...bug, resolved: true }
-// //         )[0],
-// //       ];
-// //     default:
-// //       //if we disptach an action that does not exist we want our state
-// //       // to remain the same
-// //       state;
-// //   }
-// // }
-
-// // export default reducer;
-
-// // - - - -  - NOTES - - - -  - -
-// // const bugUpdated = createAction("bugUpdated");
-// // console.log(action({ id: 1 }));
-// // this return an actionCreator with type: bugUpdated and whatever is passed
-// //within the action is added to the pyload
-
-// //both these function does the same thing
-
-// // export const bugAdded = (description) => {
-// //     return {
-// //       type: BUG_ADDED,
-// //       payload: {
-// //         description,
-// //       },
-// //     };
-// //   };
-
-// // so we do this to get easy code refactoring
-// // In future when we need to change our action.type we can just change it here
-// //rather than going to our reducer and then also changing it in our dipatch
+// this function works too but it returns a new array each time even
+//though the results are the same
