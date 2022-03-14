@@ -17,8 +17,16 @@ function reducer(state = initalState, action) {
           resolved: false,
         },
       ];
+
     case actions.BUG_REMOVED:
-      return state.filter((bug) => bug.id !== action.payload.id);
+      return state.filter((bug) => bug.id === action.payload.id);
+
+    case actions.BUG_RESOLVED:
+      return [
+        state.map((bug) =>
+          bug.id !== action.payload.id ? bug : { ...bug, resolved: true }
+        )[0],
+      ];
     default:
       //if we disptach an action that does not exist we want our state
       // to remain the same
