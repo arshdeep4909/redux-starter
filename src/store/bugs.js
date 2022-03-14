@@ -14,13 +14,14 @@ const slice = createSlice({
         resolved: false,
       });
     },
-  },
-  bugRemoved: (bugs, action) => {
-    return state.filter((bug) => bug.id !== action.payload.id);
-  },
-  bugResolved: (state, action) => {
-    const index = state.findIndex((bug) => bug.id === action.payload.id);
-    state[index].resolved = true;
+
+    bugRemoved: (bugs, action) => {
+      return bugs.filter((bug) => bug.id !== action.payload.id);
+    },
+    bugResolved: (bugs, action) => {
+      const index = bugs.findIndex((bug) => bug.id === action.payload.id);
+      bugs[index].resolved = true;
+    },
   },
 });
 
