@@ -13,12 +13,13 @@ import { userAdded } from "./store/users";
 
 const store = configurestore();
 
-store.dispatch(() => {
-  // call an API endpoint
-  //when the promise is resolved => dispatch an action & that dispatch contains the result of our API call
-  store.dispatch({ type: "bugRecievd", bugs: [1, 2, 3] });
-  // if the promise is rejected then => dispatch(), this will give out an error
-});
+store.dispatch({ type: "x", payload: { message: "an erroe" } });
+
+// store.dispatch(() => {
+//   // call an API endpoint
+//   //when the promise is resolved => dispatch an action & that dispatch contains the result of our API call
+//   // if the promise is rejected then => dispatch(), this will give out an error
+// });
 
 // DONT NEED THE CODE BELOW FOR NOW
 

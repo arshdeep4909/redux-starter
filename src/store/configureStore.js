@@ -1,14 +1,19 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import reducer from "./reducer";
 import logger from "./middleware/logger";
 import func from "./middleware/func";
+import toast from "./middleware/toast";
 
 //this is a higher orde function because it take a function as an argument
 
 export default function () {
   return configureStore({
     reducer: reducer,
-    middleware: [logger({ desitnation: "console" }), func],
+    middleware: [
+      ...getDefaultMiddleware(),
+      logger({ desitnation: "console" }),
+      toast,
+    ],
   });
 }
 
