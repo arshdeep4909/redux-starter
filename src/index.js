@@ -13,13 +13,22 @@ import { userAdded } from "./store/users";
 
 const store = configurestore();
 
-const unsubscribe = store.subscribe(() => {
-  console.log("store changed", store.getState());
+store.dispatch(() => {
+  // call an API endpoint
+  //when the promise is resolved => dispatch an action & that dispatch contains the result of our API call
+  store.dispatch({ type: "bugRecievd", bugs: [1, 2, 3] });
+  // if the promise is rejected then => dispatch(), this will give out an error
 });
+
+// DONT NEED THE CODE BELOW FOR NOW
+
+// const unsubscribe = store.subscribe(() => {
+//   console.log("store changed", store.getState());
+// });
 
 //based on the type of action it gets the reducer and then changes the state accordingly
 // const newState = reducer(state, action) how source code for dispatch looks like
-store.dispatch(userAdded({ name: "Arsh" }));
+// store.dispatch(userAdded({ name: "Arsh" }));
 // store.dispatch(userAdded({ name: "Mosh" }));
 // store.dispatch(projectAdded({ name: "project 1" }));
 // store.dispatch(bugAdded({ description: "Bug 1" }));
