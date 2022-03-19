@@ -1,10 +1,11 @@
 import axios from "axios";
+import * as actions from "../api";
 
 const api =
   ({ dispatch }) =>
   (next) =>
   async (action) => {
-    if (action.type !== "apiCallBegan") {
+    if (action.type !== actions.apiCallBegan.type) {
       return next(action);
     }
     //no if we get here this means that we are dealing with action
@@ -19,7 +20,7 @@ const api =
     //this api call will then return a promise
     try {
       const response = await axios.request({
-        baseURL: "http://localhost:9001/api/",
+        baseURL: "http://localhost:9001/api",
         url, // url of our end ponit, that gets added to base URL
         method,
         data,
@@ -27,10 +28,16 @@ const api =
       // if evething work well then we need to dispatch action
       //with type success, & on the payload we have to give it the result
       //of our API call
-      dispatch({ type: onSuccess, payload: response.data });
+      //General success dispatch
+      dispatch(actions.apiCallSuccess(response.data));
+      //Specific
+      if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
       //if something goes wrong then we are going to dispatch action with type onError
-      dispatch({ type: onError, payload: error });
+      //General Error action
+      dispatch(actions.apiCallFailed(error));
+      //Specific
+      if (onError) dispatch({ type: onError, payload: error });
     }
   };
 
